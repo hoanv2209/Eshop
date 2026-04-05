@@ -1,0 +1,43 @@
+Trong một hệ thống e-commerce theo kiến trúc microservice, các service thường được phân tách theo nghiệp vụ, mỗi service đảm nhận một chức năng cụ thể và hoạt động độc lập. Dưới đây là các service phổ biến và trách nhiệm của chúng:
+
+1. User Service (hoặc Customer Service)
+Trách nhiệm: Quản lý thông tin người dùng (đăng ký, đăng nhập, hồ sơ cá nhân), xác thực và phân quyền (xử lý token JWT, OAuth, session). Có thể lưu lịch sử đăng nhập, địa chỉ giao hàng, danh sách yêu thích.
+
+2. Product Service
+Trách nhiệm: Quản lý danh mục sản phẩm, thông tin chi tiết sản phẩm (tên, mô tả, giá, hình ảnh, thuộc tính như màu sắc, kích thước, tồn kho). Hỗ trợ tìm kiếm, lọc, phân trang sản phẩm.
+
+3. Inventory Service (Stock Service)
+Trách nhiệm: Theo dõi số lượng tồn kho thực tế, cập nhật khi có đơn hàng hoặc nhập hàng, quản lý cảnh báo tồn kho thấp, có thể tích hợp với kho vật lý hoặc nhà cung cấp.
+
+4. Cart Service (Giỏ hàng)
+Trách nhiệm: Lưu trữ trạng thái giỏ hàng của người dùng (đã đăng nhập hoặc khách), thêm/sửa/xóa sản phẩm, tính tổng tiền tạm thời, áp mã giảm giá. Thường sử dụng cache (Redis) để tăng tốc.
+
+5. Order Service
+Trách nhiệm: Xử lý quy trình đặt hàng (tạo đơn hàng, lưu thông tin đơn hàng: sản phẩm, số lượng, giá, địa chỉ giao hàng, phương thức thanh toán). Quản lý trạng thái đơn hàng (chờ xác nhận, đã thanh toán, đang giao, hoàn thành, hủy). Phối hợp với Payment, Inventory, Shipping.
+
+6. Payment Service
+Trách nhiệm: Xử lý giao dịch thanh toán (thẻ tín dụng, ví điện tử, chuyển khoản, COD). Kết nối với cổng thanh toán bên thứ ba (PayPal, Stripe, VNPay...). Quản lý hoàn tiền, xác nhận thanh toán thành công/thất bại, lưu lịch sử giao dịch.
+
+7. Shipping Service (Delivery Service)
+Trách nhiệm: Tính phí vận chuyển dựa trên địa chỉ, trọng lượng, phương thức giao hàng. Tạo và theo dõi đơn vận chuyển, cập nhật trạng thái giao hàng (đã lấy hàng, đang giao, đã giao). Tích hợp với các hãng vận chuyển (GHTK, GHN, Viettel Post…).
+
+8. Notification Service
+Trách nhiệm: Gửi thông báo đến người dùng qua email, SMS, push notification, hoặc in-app. Các sự kiện: xác nhận đơn hàng, cập nhật trạng thái vận chuyển, khuyến mãi, quên mật khẩu. Giúp giảm tải cho các service khác bằng cách xử lý bất đồng bộ.
+
+9. Review & Rating Service
+Trách nhiệm: Quản lý đánh giá, nhận xét, xếp hạng sản phẩm của người dùng. Hỗ trợ xem, lọc, báo cáo vi phạm. Thường có cơ chế kiểm duyệt hoặc tính điểm trung bình.
+
+10. Coupon / Promotion Service
+Trách nhiệm: Tạo, quản lý mã giảm giá, chương trình khuyến mãi (theo sản phẩm, danh mục, hóa đơn tối thiểu, thời gian). Kiểm tra tính hợp lệ và áp dụng vào giỏ hàng/đơn hàng.
+
+11. Search Service (có thể dùng Elasticsearch)
+Trách nhiệm: Cung cấp chức năng tìm kiếm nâng cao (tìm kiếm toàn văn, gợi ý từ khóa, sắp xếp theo độ phổ biến, giá). Thường đồng bộ dữ liệu từ Product Service qua message queue để cập nhật chỉ mục.
+
+12. API Gateway
+Trách nhiệm: Là điểm vào duy nhất cho client (web/app). Định tuyến request đến đúng service, xác thực tập trung, giới hạn tốc độ, logging, caching, chuyển đổi protocol (HTTP, WebSocket). Giúp che giấu cấu trúc microservice bên trong.
+
+13. Service Discovery & Config Server (hạ tầng)
+Trách nhiệm: Service Discovery (như Eureka, Consul) để các service tìm được địa chỉ của nhau. Config Server quản lý cấu hình tập trung (database URL, secrets, feature flags).
+
+14. Logging & Monitoring Service (ELK, Prometheus, Grafana)
+Trách nhiệm: Thu thập log, metrics, theo dõi sức khỏe, hiệu năng của các service. Phát hiện sự cố và cảnh báo.

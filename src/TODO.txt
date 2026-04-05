@@ -1,0 +1,6 @@
+1. Config Promethus + Grafana
+2. Chuyển Product sang dạng EAV
+3. Bổ sung Notification Service
+4. Bổ sung Inventory Service
+5. Bổ sung Review & Rating Service
+6. Bổ sung Logging & Monitoring Service
